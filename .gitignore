@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+!.env.example
+.local/
+guest_request.py
+private_request.py
+*.har
+.ipynb_checkpoints/
+wb-prices-*.json
