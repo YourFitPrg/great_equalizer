@@ -10,3 +10,7 @@ private_request.py
 *.har
 .ipynb_checkpoints/
 wb-prices-*.json
+inputs/
+outputs/
+*.xlsx
+*.csv
