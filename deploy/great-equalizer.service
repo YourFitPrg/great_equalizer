@@ -1,0 +1,41 @@
+[Unit]
+Description=Great Equalizer Ozon/WB
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=great-equalizer
+Group=great-equalizer
+WorkingDirectory=/opt/great_equalizer/current
+Environment=GE_SERVER_MODE=1
+Environment=GE_PUBLIC_ORIGIN=https://puls-mp.ru
+Environment=GE_URL_PREFIX=/great_equalizer
+Environment=GE_AUTH_FILE=/etc/great-equalizer/login.json
+Environment=GE_STATE_DIR=/var/lib/great-equalizer
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+StateDirectory=great-equalizer
+StateDirectoryMode=0700
+ExecStart=/opt/great_equalizer/venv/bin/python /opt/great_equalizer/current/web_app.py --port 8765
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+LockPersonality=true
+LimitCORE=0
+MemorySwapMax=0
+MemoryMax=768M
+TasksMax=64
+
+[Install]
+WantedBy=multi-user.target
