@@ -1,6 +1,6 @@
 # Развёртывание Great Equalizer на yfweb
 
-Версия **0.3.0**, адрес **https://puls-mp.ru/great_equalizer/**.
+Версия **0.4.0**, адрес **https://puls-mp.ru/great_equalizer/**.
 Это подготовленный пакет; команды ниже выполняются администратором на yfweb.
 К серверу пользователя из среды разработки подключение не выполнялось.
 
@@ -52,7 +52,12 @@ Python и при отправке запросов в Ozon. Они не запи
 своей cgroup; настройки остальных процессов не меняются.
 
 Сохраняются только настройки кампаний, ожидаемые ссылки, ограничения и состояния
-незавершённых операций. Расписание автоматических изменений пока не включено.
+незавершённых операций. Расписание по интервалу 1–168 часов настраивается
+в карточке кампании и работает при активном сеансе с ключом.
+[Подробные правила](docs/hourly-schedule.md).
+
+Для уже установленной версии 0.3.0: [обновление без изменений Nginx](UPDATE_SERVER.md).
+Ниже — первая установка.
 
 ## 1. Предварительная проверка
 
@@ -79,12 +84,12 @@ MainPID nginx.service должен соответствовать основно
 ```bash
 sudo apt-get install --no-install-recommends python3-venv unzip certbot
 id great-equalizer || sudo useradd --system --home-dir /var/lib/great-equalizer --no-create-home --shell /usr/sbin/nologin great-equalizer
-sudo install -d -m 0755 /opt/great_equalizer/releases/0.3.0
-curl -fL https://github.com/YourFitPrg/great_equalizer/raw/refs/heads/main/exports/ozon-local-web-0.3.0.zip -o /tmp/great-equalizer-0.3.0.zip
-sudo unzip -q /tmp/great-equalizer-0.3.0.zip -d /opt/great_equalizer/releases/0.3.0
+sudo install -d -m 0755 /opt/great_equalizer/releases/0.4.0
+curl -fL https://github.com/YourFitPrg/great_equalizer/raw/refs/heads/main/exports/ozon-local-web-0.4.0.zip -o /tmp/great-equalizer-0.4.0.zip
+sudo unzip -q /tmp/great-equalizer-0.4.0.zip -d /opt/great_equalizer/releases/0.4.0
 sudo python3 -m venv /opt/great_equalizer/venv
-sudo /opt/great_equalizer/venv/bin/python -m pip install -r /opt/great_equalizer/releases/0.3.0/requirements-web.txt
-sudo ln -s /opt/great_equalizer/releases/0.3.0 /opt/great_equalizer/current
+sudo /opt/great_equalizer/venv/bin/python -m pip install -r /opt/great_equalizer/releases/0.4.0/requirements-web.txt
+sudo ln -s /opt/great_equalizer/releases/0.4.0 /opt/great_equalizer/current
 ```
 
 Это первая установка: если `current` или папка релиза уже есть, не перезаписывайте
@@ -106,7 +111,7 @@ sudo systemctl enable --now great-equalizer.service
 curl -fsS http://127.0.0.1:8765/great_equalizer/health
 ```
 
-Успех — JSON с версией 0.3.0. Ключи Ozon на этом этапе не нужны.
+Успех — JSON с версией 0.4.0. Ключи Ozon на этом этапе не нужны.
 Статус/ошибки: `sudo systemctl status great-equalizer.service` и
 `sudo journalctl -u great-equalizer.service -n 50 --no-pager`.
 Смена пароля: остановить нашу службу, повторить configure_server.py и chown/chmod,
